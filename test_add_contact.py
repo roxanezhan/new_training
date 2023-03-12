@@ -2,6 +2,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.keys import Keys
 from contact import Contact
 import unittest
 
@@ -20,9 +21,8 @@ class test_add_contact(unittest.TestCase):
 
     def test_add_contact(self):
         wd = self.wd
-        self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
-        self.new_contact(wd, Contact(firstname="f_name", middlename="m_name", lastname="l_name", nickname="nick_name", title="title", company="company", address="address, qqq", home_phone="12-12-12", mobile_phone="111-121-12-12", work_phone="23-23-23", fax="34-34-34", email="111@222.qq", email2="222@222.qq", email3="333@222.qq", homepage="123.kz", bday="6", bmonth="April", byear="1973", aday="1", amonth="January", ayear="2000", address2="address, www", phone2="123", notes="qwerty"))
+        self.new_contact(wd, Contact(firstname="f_name", middlename="m_name", lastname="l_name", nickname="nick_name", title="title", company="company", address="address, qqq", home_phone="12-12-12", mobile_phone="111-121-12-12", work_phone="23-23-23", fax="34-34-34", email="111@222.qq", email2="222@222.qq", email3="333@222.qq", homepage="123.kz", bday="6", bmonth="April", byear="1973", aday="1", amonth="January", ayear="2000", address2="address, www", phone2="123", notes="qwerty", photo="C:\\GitProjetcs\\new_training\\icons\\camomille.jpg"))
         self.logout(wd)
 
     def logout(self, wd):
@@ -36,7 +36,7 @@ class test_add_contact(unittest.TestCase):
         wd.find_element(By.NAME, "middlename").send_keys(contact.middlename)
         wd.find_element(By.NAME, "lastname").send_keys(contact.lastname)
         wd.find_element(By.NAME, "nickname").send_keys(contact.nickname)
-        #wd.find_element(By.NAME, "photo").send_keys(contact.photo)
+        wd.find_element(By.XPATH, "//input[@name='photo']").send_keys(contact.photo)
         wd.find_element(By.NAME, "title").send_keys(contact.title)
         wd.find_element(By.NAME, "company").send_keys(contact.company)
         wd.find_element(By.NAME, "address").send_keys(contact.address)
@@ -57,7 +57,6 @@ class test_add_contact(unittest.TestCase):
         wd.find_element(By.NAME, "address2").send_keys(contact.address2)
         wd.find_element(By.NAME, "phone2").send_keys(contact.phone2)
         wd.find_element(By.NAME, "notes").send_keys(contact.notes)
-        # wd.find_element(By.XPATH, "(//input[@name='submit'])[2]").click()
         # submit contact createion
         wd.find_element(By.NAME,"submit").click()
 
@@ -65,6 +64,7 @@ class test_add_contact(unittest.TestCase):
         wd.get("http://localhost/addressbook/")
 
     def login(self, wd, username, password):
+        self.open_home_page(wd)
         wd.find_element(By.NAME, "user").click()
         wd.find_element(By.NAME, "user").clear()
         wd.find_element(By.NAME, "user").send_keys("%s" % username)
