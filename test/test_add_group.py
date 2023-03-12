@@ -2,8 +2,8 @@
 
 # -*- coding: utf-8 -*-
 import pytest
-from group import Group
-from application_group import Application_group
+from model.group import Group
+from fixture.application_group import Application_group
 
 
 # если написать "@pytest.fixture", то наша функция из простой функции превращается в фикстуру
