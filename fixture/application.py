@@ -1,15 +1,12 @@
 # этот скрипт пишет разработчик по вспомогательным методам
 from selenium import webdriver
-from fixture.session import SessionHelper
-from fixture.contact import ContactHelper
+from fixture.managerHelpers import ManagerHelper
 
-
-class Application_contact:
+class Application:
     def __init__(self):
         self.wd = webdriver.Firefox()
-        self.wd.implicitly_wait(30)
-        self.session = SessionHelper(self)
-        self.contact = ContactHelper(self)
+        self.wd.implicitly_wait(60)
+        self.manager = ManagerHelper(self)
 
     def open_home_page(self):
         wd = self.wd
