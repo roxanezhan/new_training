@@ -52,3 +52,7 @@ class ContactHelper:
         wd.find_element(By.NAME, "notes").send_keys(contact.notes)
         # submit contact createion
         wd.find_element(By.NAME,"submit").click()
+
+    def count(self):
+        wd = self.app.wd
+        return len(wd.find_elements(By.NAME, "selected[]"))
