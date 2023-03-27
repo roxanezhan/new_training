@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+import time
 
 class SessionHelper:
     def __init__(self, app):
@@ -21,10 +22,14 @@ class SessionHelper:
 
     def is_logged_in(self):
         wd = self.app.wd
+        #wd.find_elements(By.LINK_TEXT, "Logout")
+        time.sleep(2)
         return len(wd.find_elements(By.LINK_TEXT, "Logout")) > 0
 
     def is_logged_in_as(self, username):
         wd = self.app.wd
+        #wd.find_element(By.XPATH, "//div/div[1]/form/b")
+        time.sleep(2)
         return wd.find_element(By.XPATH, "//div/div[1]/form/b").text == "("+username+")"
 
     def ensure_logout(self):
