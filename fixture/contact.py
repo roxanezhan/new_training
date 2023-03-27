@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+import time
 
 
 class ContactHelper:
@@ -7,17 +8,17 @@ class ContactHelper:
     def __init__(self, app):
         self.app = app
 
-    def delete_first_contact(self, contact):
+    def delete_first_contact(self):
         wd = self.app.wd
         wd.find_element(By.LINK_TEXT, "home").click()
         # select first contact
         wd.find_element(By.NAME, "selected[]").click()
         # submit deletion
-        wd.find_element(By.XPATH, "//input[@name='Delete']").click()
+        wd.find_element(By.XPATH, "//input[@value='Delete']").click()
         # delete confirmation
-        wd.switch_to_alert().accept()
+        wd.switch_to.alert.accept()
         # wait
-        wd.find_element(By.LINK_TEXT, "Last name")
+        time.sleep(2)
 
     def add_new(self, contact):
         wd = self.app.wd
