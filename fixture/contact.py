@@ -44,9 +44,14 @@ class ContactHelper:
         self.open_contact_page()
         contacts = []
         for element in wd.find_elements(By.CSS_SELECTOR, "tr[name='entry']"):
-            text = element.text
             id = element.find_element(By.NAME, "selected[]").get_attribute("value")
-            contacts.append(Contact(firstname=text, id=id))
+            #text = element.text
+            l_name = element.find_element(By.CSS_SELECTOR, "td:nth-child(2)").text
+            f_name = element.find_element(By.CSS_SELECTOR, "td:nth-child(3)").text
+            contacts.append(Contact(id=id, firstname=f_name, lastname=l_name))
+            #print("here is id: ", id)
+            #print("here is firstname:", f_name)
+            #print("here is lastname:", l_name)
         return contacts
 
     def modify_first_contact(self, new_contact_data):
