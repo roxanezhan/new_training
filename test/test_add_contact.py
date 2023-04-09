@@ -11,8 +11,8 @@ def test_add_contact(app):
                       byear="1973", aday="1", amonth="January", ayear="2000", address2="address, www", \
                       phone2="123", notes="qwerty", photo="C:\\GitProjetcs\\new_training\\icons\\camomille.jpg")
     app.contact.add_new(contact)
-    #print("len old contacts", len(old_contacts))
-    #print("count new contacts", app.contact.count())
+    print("len old contacts", len(old_contacts))
+    print("count new contacts", app.contact.count())
     assert len(old_contacts) + 1 == app.contact.count()
     new_contacts = app.contact.get_contact_list()
     old_contacts.append(contact)

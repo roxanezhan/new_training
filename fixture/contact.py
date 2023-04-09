@@ -14,11 +14,24 @@ class ContactHelper:
         if not(wd.current_url.endswith("/addressbook/") and len(wd.find_elements(By.LINK_TEXT, "Last name")) > 0):
             wd.find_element(By.LINK_TEXT, "home").click()
 
-    def delete_first_contact(self):
+    def select_first_contact(self):
         wd = self.app.wd
-        wd.find_element(By.LINK_TEXT, "home").click()
-        # select first contact
         wd.find_element(By.NAME, "selected[]").click()
+
+    def select_contact_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements(By.NAME, "selected[]")[index].click()
+
+    def delete_first_contact(self):
+        self.delete_contact_by_index(0)
+
+    def delete_contact_by_index(self, index):
+        wd = self.app.wd
+        #wd.find_element(By.LINK_TEXT, "home").click()
+        self.open_contact_page()
+        # select first contact
+        #wd.find_element(By.NAME, "selected[]").click()
+        self.select_contact_by_index(index)
         # submit deletion
         wd.find_element(By.XPATH, "//input[@value='Delete']").click()
         # delete confirmation
@@ -58,12 +71,15 @@ class ContactHelper:
                 #print("here is id: ", id)                #print("here is firstname:", f_name)                #print("here is lastname:", l_name)
         return list(self.contact_cache)
 
-    def modify_first_contact(self, new_contact_data):
+    def modify_first_contact(self):
+        self.modify_contact_by_index(0)
+
+    def modify_contact_by_index(self, index, new_contact_data):
         wd = self.app.wd
         self.open_contact_page()
-        #self.select_first_contact()
+        #self.select_contact_by_index(index)
         # open modification form
-        wd.find_element(By.XPATH, "//img[@alt='Edit']").click()
+        wd.find_elements(By.XPATH, "//img[@alt='Edit']")[index].click()
         # fill contact form
         self.fill_contact_form(new_contact_data)
         # submit modification
@@ -115,7 +131,3 @@ class ContactHelper:
             wd.find_element(By.NAME, field_name).click()
             wd.find_element(By.NAME, field_name).clear()
             wd.find_element(By.NAME, field_name).send_keys(text)
-
-    #def select_first_contact(self):
-        #wd = self.app.wd
-        #wd.find_element(By.NAME, "selected[]").click()
