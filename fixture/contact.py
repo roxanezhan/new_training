@@ -25,6 +25,7 @@ class ContactHelper:
         wd.switch_to.alert.accept()
         # wait
         time.sleep(2)
+        self.contact_cache = None
 
     def add_new(self, contact):
         wd = self.app.wd
@@ -34,25 +35,28 @@ class ContactHelper:
         self.fill_contact_form(contact)
         # submit contact createion
         wd.find_element(By.NAME,"submit").click()
+        self.contact_cache = None
 
     def count(self):
         wd = self.app.wd
+        self.open_contact_page()
         return len(wd.find_elements(By.NAME, "selected[]"))
 
+    contact_cache = None
+
     def get_contact_list(self):
-        wd = self.app.wd
-        self.open_contact_page()
-        contacts = []
-        for element in wd.find_elements(By.CSS_SELECTOR, "tr[name='entry']"):
-            id = element.find_element(By.NAME, "selected[]").get_attribute("value")
-            #text = element.text
-            l_name = element.find_element(By.CSS_SELECTOR, "td:nth-child(2)").text
-            f_name = element.find_element(By.CSS_SELECTOR, "td:nth-child(3)").text
-            contacts.append(Contact(id=id, firstname=f_name, lastname=l_name))
-            #print("here is id: ", id)
-            #print("here is firstname:", f_name)
-            #print("here is lastname:", l_name)
-        return contacts
+        if self.contact_cache is None:
+            wd = self.app.wd
+            self.open_contact_page()
+            self.contact_cache = []
+            for element in wd.find_elements(By.CSS_SELECTOR, "tr[name='entry']"):
+                id = element.find_element(By.NAME, "selected[]").get_attribute("value")
+                #text = element.text
+                l_name = element.find_element(By.CSS_SELECTOR, "td:nth-child(2)").text
+                f_name = element.find_element(By.CSS_SELECTOR, "td:nth-child(3)").text
+                self.contact_cache.append(Contact(id=id, firstname=f_name, lastname=l_name))
+                #print("here is id: ", id)                #print("here is firstname:", f_name)                #print("here is lastname:", l_name)
+        return list(self.contact_cache)
 
     def modify_first_contact(self, new_contact_data):
         wd = self.app.wd
@@ -64,6 +68,7 @@ class ContactHelper:
         self.fill_contact_form(new_contact_data)
         # submit modification
         wd.find_element(By.NAME, "update").click()
+        self.contact_cache = None
 
     def fill_contact_form(self, contact):
         wd = self.app.wd
