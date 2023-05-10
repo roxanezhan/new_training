@@ -128,11 +128,11 @@ class ContactHelper:
                 id = element.find_element(By.NAME, "selected[]").get_attribute("value")
                 #print("\nthe id is:", id)
                 cells = element.find_elements(By.TAG_NAME, "td")
-                firstname = cells[2].text
+                firstname = cells[2].text #в списке девтулса выбрать td 3-й по счету
                 #print("\nthis is firstname:", firstname, "\nfirstnameend")
-                lastname = cells[1].text
+                lastname = cells[1].text #в списке девтулса выбрать td 2-й по счету
                 #print("\nthis is lastname:", lastname, "\nlastnameend")
-                all_phones = cells[5].text.splitlines()
+                all_phones = cells[5].text.splitlines() #в списке девтулса выбрать td 6-й по счету
                 self.contact_cache.append(Contact(id=id, firstname=firstname, lastname=lastname, home_phone=all_phones[0], mobile_phone=all_phones[1],
                                                   work_phone=all_phones[2], phone2=all_phones[3]))
         return list(self.contact_cache)
@@ -141,14 +141,14 @@ class ContactHelper:
         wd = self.app.wd
         self.app.open_home_page()
         row = wd.find_elements(By.NAME, "entry")[index]
-        cell = row.find_elements(By.TAG_NAME, "td")[7]
+        cell = row.find_elements(By.TAG_NAME, "td")[7] #выбрать рисунок карандашик для редактирования контакта. в списке девтулса выбрать td 8-й по счету (это элемент карандашика)
         cell.find_element(By.TAG_NAME, "a").click()
 
     def open_contact_view_by_index(self, index):
         wd = self.app.wd
         self.app.open_home_page()
         row = wd.find_elements(By.NAME, "entry")[index]
-        cell = row.find_elements(By.TAG_NAME, "td")[6]
+        cell = row.find_elements(By.TAG_NAME, "td")[6] #выбрать рисунок человечка для редактирования контакта. в списке девтулса выбрать td 7-й по счету (это элемент человечка)
         cell.find_element(By.TAG_NAME, "a").click()
 
     def get_contact_info_from_edit_page(self, index):
