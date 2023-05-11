@@ -1,18 +1,46 @@
 from model.contact import  Contact
 from random import randrange
+import random
+import string
+import pytest
 
-def test_modify_contact_firstname(app):
+def random_string(prefix, maxlen):
+    symbols = string.ascii_letters + string.digits + " "*2 #генератор случайных символов в строке, где " "*10 означает увеличение частоты пробелов в 10 раз
+    return prefix + "".join([random.choice(symbols) for i in range(random.randrange(maxlen))]) #генератор случайных строк
+
+def random_numbers(maxlen):
+    numbers = string.digits + "-"*3
+    return "".join(
+        [random.choice(numbers) for i in range(maxlen)])  # генератор случайных числовых последовательностей
+
+def random_emails_homepage(prefix, postfix, maxlen):
+    symbolsemail = string.ascii_letters + string.digits #генератор случайных символов в строке, где " "*10 означает увеличение частоты пробелов в 10 раз
+    return prefix + "".join(
+        [random.choice(symbolsemail) for i in range(random.randrange(maxlen))]) + postfix # генератор случайных строк
+
+
+#сначала проверяется тест на пустых данных, потом цикл из случайно сгенерированнх полей:
+testdata_C = [Contact(firstname=random_string("firstname", 10), middlename=random_string("middlename", 10),
+                      lastname=random_string("lastname", 10), nickname=random_string("nickname", 10),
+                      title=random_string("title", 10), company=random_string("company", 10),
+                      address=random_string("address", 10), home_phone=random_numbers(10),
+                      mobile_phone=random_numbers(10), work_phone=random_numbers(10), fax=random_numbers(10),
+                      email=random_emails_homepage("email", "@gmail.kz", 10),
+                      email2=random_emails_homepage("email2", "@gmail.kz", 10),
+                      email3=random_emails_homepage("email3", "@gmail.kz", 10),
+                      homepage=random_emails_homepage("page", ".kz", 10), bday=random.choice('123456789'),
+                      bmonth="April", byear="1973", aday=random.choice('123456789'), amonth="January",
+                      ayear="2000", address2=random_string("address2", 10),
+                      phone2=random_numbers(10), notes=random_string("notes", 10), photo="C:\\GitProjetcs\\new_training\\icons\\camomille.jpg")
+]
+
+@pytest.mark.parametrize("contact", testdata_C)
+def test_modify_contact_firstname(app, contact):
     if app.contact.count() == 0:
-        app.contact.add_new(
-            Contact(firstname="test_name", middlename="test_name", lastname="test_name", nickname="test_name", title="test_title",
-                    company="test_company", address="test_address, qqq", home_phone="12-12-12", mobile_phone="111-121-12-12",
-                    work_phone="23-23-23", fax="34-34-34", email="111@222.qq", email2="222@222.qq", email3="333@222.qq",
-                    homepage="123.kz", bday="6", bmonth="April", byear="1973", aday="1", amonth="January", ayear="2000",
-                    address2="address, www", phone2="123", notes="test_qwerty",
-                    photo="C:\\GitProjetcs\\new_training\\icons\\camomille.jpg"))
+        app.contact.add_new(contact)
     old_contacts = app.contact.get_contact_list()
     index = randrange(len(old_contacts))
-    contact = Contact(firstname="Changed firstname3", lastname="Changed lastname3")
+    contact = Contact(firstname=random_string("firstname", 10), lastname=random_string("lastname", 10))
     contact.id = old_contacts[index].id
     app.contact.modify_contact_by_index(index, contact)
     new_contacts = app.contact.get_contact_list()
