@@ -6,7 +6,7 @@ import os.path
 import getopt   #для чтения опций командной строки
 import sys      #для того, чтобы получить доступ к опциям командной строки
 
-#выполнение генератора данных параметризованным
+#выполнение генератора данных параметризованным.
 try:
     opts, args = getopt.getopt(sys.argv[1:], "n:f:", ["number of groups", "file"])
 except getopt.GetoptError as err:
