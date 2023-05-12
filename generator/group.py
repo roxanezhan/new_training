@@ -1,4 +1,4 @@
-import json
+import jsonpickle
 from model.group import Group
 import random
 import string
@@ -44,4 +44,5 @@ testdata = [Group(name="", header="", footer="")] + [
 # а нам нужно перейти в пакет data. Для этого переходим на 1 уровень вверх в родительскую директорией командой "../".
 file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", f) # и создание параметризованного названия файла
 with open(file, "w") as out:
-    out.write(json.dumps(testdata, default=lambda x: x.__dict__, indent=2)) #json.dumps превращает некоторую структуру данных в строку в формате json
+    jsonpickle.set_encoder_options("json", indent=2)
+    out.write(jsonpickle.encode(testdata))
